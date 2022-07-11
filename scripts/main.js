@@ -1,5 +1,21 @@
-import {Game} from './game.js';
-import {characters} from './character.js';
+const characters = [
+    {
+        name: 'Scrappy',
+        college: 'University of North Texas', 
+        info: 'Scrappy is the mascot of the University of North Texas. The name Scrappy wsa chosen by students in 1995.' 
+    },
+
+]
+
+const player1 = {
+    id: 1,
+    character: null,
+}
+
+const player2 = {
+    id: 2,
+    character: null,
+}
 
 let difficulty; //global variable to determine the difficulty of the bot
 let mode; //global variable to store the mode the user selects to be in.
@@ -14,7 +30,7 @@ function changeSelected(imgPath) {
     selected.src = imgPath;
 }
 
-function placeTile(col) {
+/*function placeTile(col) {
 
 }
 
@@ -23,5 +39,4 @@ function playGame() {
     while(1) {
 
     }
-}
-
+}*/

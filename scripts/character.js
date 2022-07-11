@@ -1,13 +1,10 @@
-export class Character {
-    constructor(name, college, info) {
-        this._name = name;
-        this._collge = college;
-        this._info = info;
-    }
+const characters = [
+    {
+        name: 'Scrappy',
+        college: 'University of North Texas', 
+        info: 'Scrappy is the mascot of the University of North Texas. The name Scrappy wsa chosen by students in 1995.' 
+    },
 
-    get name() { return this._name; }
-    get college() { return this._collge; }
-    get info() { return this._info; }
-}
+]
 
-export const character = [new Character('Scrappy', 'University of North Texas', 'Scrappy is the mascot of the University of North Texas. The name Scrappy wsa chosen by students in 1995.')];
+export default characters;

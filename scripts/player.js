@@ -9,5 +9,4 @@ export class Player {
             this._status = false;
 
     }
-
 }
