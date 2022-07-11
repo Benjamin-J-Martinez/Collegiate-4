@@ -9,3 +9,5 @@ export class Character {
     get college() { return this._collge; }
     get info() { return this._info; }
 }
+
+export const character = [new Character('Scrappy', 'University of North Texas', 'Scrappy is the mascot of the University of North Texas. The name Scrappy wsa chosen by students in 1995.')];

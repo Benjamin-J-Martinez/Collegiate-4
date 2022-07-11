@@ -1,7 +1,7 @@
 import {Player} from './player.js';
 import {Board} from './board.js';
 
-class Game {
+export class Game {
     constructor(player1, player2) {
         this._player1 = player1;
         this._player2 = player2;
