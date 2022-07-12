@@ -1,3 +1,7 @@
+import {Board} from './board.js';
+
+let  mode = '2player';
+
 const characters = [
     {
         name: 'Scrappy',
@@ -7,36 +11,42 @@ const characters = [
 
 ]
 
-const player1 = {
-    id: 1,
-    character: null,
+const game = {
+    player1: { 
+        id: 1, 
+        character: null
+    },
+    player2: {
+        id: 2,
+        character: null,
+        difficulty: null,
+    },
+    board: new Board(),
 }
 
-const player2 = {
-    id: 2,
-    character: null,
+const table = document.getElementById('table');
+const cols = table.getElementsByTagName('td');
+for(let i = 0; i < cols.length; i++) {
+    cols[i].addEventListener('mouseover', (event) => {
+        const col = event.target.id;
+        const id = 'h' + col[1];
+        document.getElementById(id).className = 'rounded-circle bg-danger mx-auto';
+    })
+
+    cols[i].addEventListener('mouseout', (event) => {
+        const col = event.target.id;
+        const id = 'h' + col[1];
+        document.getElementById(id).className = 'rounded-circle bg-danger mx-auto invisible';
+    })
+
+    cols[i].addEventListener('click', (event) => {
+        const col = event.target.id[1];
+        game.board.placeTile(col, 1);
+        renderGame(game);
+    })
 }
 
-let difficulty; //global variable to determine the difficulty of the bot
-let mode; //global variable to store the mode the user selects to be in.
-
-function setMode(selectedMode) { mode = selectedMode; }
-
-//Sets the difficulty to easy if the user selects the easy button
-function setDifficulty(diff) { difficulty = diff; }
-
-function changeSelected(imgPath) {
-    const selected = document.getElementById('selected');
-    selected.src = imgPath;
+if(mode === '2player') {
+    
 }
 
-/*function placeTile(col) {
-
-}
-
-function playGame() {
-    let game = new Game();
-    while(1) {
-
-    }
-}*/

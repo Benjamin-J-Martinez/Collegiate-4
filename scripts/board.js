@@ -12,12 +12,18 @@ export class Board {
     //This method places player tile on the board given a tile at the next open row
     placeTile(col, player) {
 
-        if(this._board[0][col])
+        if(this._board[0][col]){
             return null;
+        }
+           
 
         for(let i = 1; i < this._board.length; i++) {
-            if(this._board[i][col])
+            if(this._board[i][col]) {
                 this._board[i-1][col] = player;
+            }
+
+            if(i === this._board.length-1 && !this._board[i][col])
+                this._board[i][col] = player;
         }
     }
 
@@ -165,6 +171,8 @@ export class Board {
 
         return 0;
     }
+
+    get board() { return this._board; }
 
     
 }
