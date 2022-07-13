@@ -1,16 +1,3 @@
-
-function setMode(selectedMode) { mode = selectedMode; }
-
-//Sets the difficulty to easy if the user selects the easy button
-function setDifficulty(diff) { game.player2.difficulty = diff; }
-
-
-
-function changeSelected(imgPath) {
-    const selected = document.getElementById('selected');
-    selected.src = imgPath;
-}
-
 function renderGame(game) {
     const currentBoard = game.board.board;
     for(let i = 0; i < currentBoard.length; i++) {
@@ -24,10 +11,14 @@ function renderGame(game) {
             }
 
             if(currentBoard[i][j] === 2) {
-                const tile = document.getElementById(row).getElementById(col).getElementsByTagName('div')[0];
+                const tile = document.getElementById(row).getElementsByTagName('td')[col];
                 tile.innerHTML = '<div class="rounded-circle bg-warning mx-auto" style="width:5rem; height:5rem"></div>';
             }  
         }
     }
+}
+
+function addHoverListener(event) {
+    
 }
 

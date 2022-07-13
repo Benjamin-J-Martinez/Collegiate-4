@@ -6,7 +6,6 @@ export class Board {
                        [0,0,0,0,0,0,0],
                        [0,0,0,0,0,0,0],
                        [0,0,0,0,0,0,0]];
-        this._status = 0; //game is still going.
     }
 
     //This method places player tile on the board given a tile at the next open row
@@ -20,10 +19,14 @@ export class Board {
         for(let i = 1; i < this._board.length; i++) {
             if(this._board[i][col]) {
                 this._board[i-1][col] = player;
+                break;
             }
 
-            if(i === this._board.length-1 && !this._board[i][col])
+            if(i === this._board.length-1 && !this._board[i][col]) {
                 this._board[i][col] = player;
+                break;
+            }
+                
         }
     }
 
@@ -59,7 +62,7 @@ export class Board {
 
         //checks columns for a connect 4
         for(let j = 0; j < this._board[0].length; j++) {
-            for(let i = this._board.length; i >= 0; i--) {
+            for(let i = this._board.length-1; i >= 0; i--) {
                 if(this._board[i][j] === 1) {
                     p1++;
                     p2 = 0;
