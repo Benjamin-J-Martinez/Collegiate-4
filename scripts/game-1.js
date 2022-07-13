@@ -32,10 +32,14 @@ for(let i = 0; i < cols.length; i++) {
 
     cols[i].addEventListener('click', (event) => {
         const col = event.target.id[1];
-        if(p1Turn)
-            game.board.placeTile(col, 1);
-        else
-            game.board.placeTile(col, 2);
+        game.board.placeTile(col, 1);
+        
+        //game.board.placeTile(makeMove(), 2);
+        const clonedBoard = [...game.board.board];
+        //let clone = new Board();
+        //clone.placeTile(4, 2);
+        console.log(clonedBoard === game.board.board);
+        console.log(clonedBoard);
 
         renderGame(game);
         p1Turn = !p1Turn;
@@ -62,4 +66,52 @@ function removeListeners() {
     for(let i = 0; i < cols.length; i++) {
         cols[i].removeEventListener('click', );
     }
+}
+
+
+
+function makeMove() {
+    let clone = game.board.clone(game.board.board);
+    const valid = [0, 0, 0, 0, 0, 0, 0];
+
+    let maxConts = 0;
+    let bestCol = -1;
+
+    for(let i = 0; i < 7; i++)
+    {
+        clone = game.board.clone(game.board.board);
+
+        valid[i] = clone.placeTile(i, 2);
+        if(clone.getStatus() == 2)
+            return i;
+
+        let continues = 7;
+        for(let j = 0; j < 7; j++)
+        {
+            const clone2 = clone.clone(clone.board);
+            let valid2 = clone2.placeTile(j, 1);
+
+            if(clone2.getStatus() == 1 && valid2)
+                continues--;
+        }
+
+        if(continues > maxConts)
+        {
+            maxConts = continues;
+            bestCol = i;
+        }
+    }
+
+    if(valid[bestCol])
+        return bestCol;
+    else
+    {
+        for(let i = 0; i < 7; i++)
+        {
+            if(valid[i])
+                return i;
+        }
+    }
+
+    return bestCol;
 }

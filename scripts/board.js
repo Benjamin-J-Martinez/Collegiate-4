@@ -1,11 +1,16 @@
 export class Board {
-    constructor() {
-        this._board = [[0,0,0,0,0,0,0],
-                       [0,0,0,0,0,0,0],
-                       [0,0,0,0,0,0,0],
-                       [0,0,0,0,0,0,0],
-                       [0,0,0,0,0,0,0],
-                       [0,0,0,0,0,0,0]];
+    constructor(board) {
+        if(board === undefined){
+            this._board = [[0,0,0,0,0,0,0],
+                            [0,0,0,0,0,0,0],
+                            [0,0,0,0,0,0,0],
+                            [0,0,0,0,0,0,0],
+                            [0,0,0,0,0,0,0],
+                            [0,0,0,0,0,0,0]];
+        }
+        else
+            this._board = board;
+        
     }
 
     //This method places player tile on the board given a tile at the next open row
