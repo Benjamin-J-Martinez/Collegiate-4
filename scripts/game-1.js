@@ -10,6 +10,7 @@ const table = document.getElementById('table');
 const cols = table.getElementsByTagName('td');
 
 let p1Turn = true;
+let numTurns = 1;
 
 for(let i = 0; i < cols.length; i++) {
     cols[i].addEventListener('mouseover', (event) => {
@@ -33,16 +34,21 @@ for(let i = 0; i < cols.length; i++) {
     cols[i].addEventListener('click', (event) => {
         const col = event.target.id[1];
         game.board.placeTile(col, 1);
+        numTurns++;
         
-        //game.board.placeTile(makeMove(), 2);
-        const clonedBoard = [...game.board.board];
-        //let clone = new Board();
-        //clone.placeTile(4, 2);
-        console.log(clonedBoard === game.board.board);
-        console.log(clonedBoard);
+        if(numTurns <= 4){
+            let randCol = Math.floor(Math.random() * 7);
+            game.board.placeTile(randCol, 2);
+            numTurns++;
+        } else {
+            game.board.placeTile(makeMove(), 2);
+            console.log('are we here');
+            numTurns++;
+        }
+        
 
         renderGame(game);
-        p1Turn = !p1Turn;
+
         if(game.board.getStatus() === 1) {
           const menuButton = document.getElementById('menu');
           document.getElementById('winner').innerHTML = 'Player 1 Wins!!!';
@@ -71,7 +77,9 @@ function removeListeners() {
 
 
 function makeMove() {
-    let clone = game.board.clone(game.board.board);
+    let strBoard = JSON.stringify(game.board.board);
+    let clone = new Board(JSON.parse(strBoard));
+
     const valid = [0, 0, 0, 0, 0, 0, 0];
 
     let maxConts = 0;
@@ -79,7 +87,7 @@ function makeMove() {
 
     for(let i = 0; i < 7; i++)
     {
-        clone = game.board.clone(game.board.board);
+        clone = new Board(JSON.parse(strBoard));
 
         valid[i] = clone.placeTile(i, 2);
         if(clone.getStatus() == 2)
@@ -88,11 +96,14 @@ function makeMove() {
         let continues = 7;
         for(let j = 0; j < 7; j++)
         {
-            const clone2 = clone.clone(clone.board);
+            const strClone2 = JSON.stringify(clone.board);
+            const clone2 = new Board(JSON.parse(strClone2));
             let valid2 = clone2.placeTile(j, 1);
 
-            if(clone2.getStatus() == 1 && valid2)
+            if(clone2.getStatus() == 1 && valid2) {
                 continues--;
+            }
+                
         }
 
         if(continues > maxConts)

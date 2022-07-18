@@ -9,7 +9,7 @@ export class Board {
                             [0,0,0,0,0,0,0]];
         }
         else
-            this._board = board;
+            this._board = [...board];
         
     }
 
@@ -17,19 +17,19 @@ export class Board {
     placeTile(col, player) {
 
         if(this._board[0][col]){
-            return null;
+            return false;
         }
            
 
         for(let i = 1; i < this._board.length; i++) {
             if(this._board[i][col]) {
                 this._board[i-1][col] = player;
-                break;
+                return true;
             }
 
             if(i === this._board.length-1 && !this._board[i][col]) {
                 this._board[i][col] = player;
-                break;
+                return true;
             }
                 
         }
