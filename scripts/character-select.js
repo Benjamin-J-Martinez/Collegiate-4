@@ -58,8 +58,62 @@ const characters = [
     {
         name: 'Scrappy',
         college: 'University of North Texas', 
-        info: 'Scrappy is the mascot of the University of North Texas. The name Scrappy wsa chosen by students in 1995.',
+        info: 'Based in Denton, Scrappy was known as various names throughout the years, including "Eppy," though in 1995 the name "Scrappy" was chosen by the student body.',
         imgSrc: './images/scrappy-Cropped.png',
+    },
+    {
+        name: 'Owl of Minerva',
+        college: 'Texas Womens University',
+        info: 'Put Info Here',
+        imgSrc: './images/minerva-Cropped.png',
+    },
+    {
+        name: 'Bevo',
+        college: 'University of Texas',
+        info: 'Put Info Here',
+        imgSrc: './images/Bevo-Cropped.png',
+    },
+    {
+        name: 'Boko the Bobcat',
+        college: 'Texas State University',
+        info: 'Put Info Here',
+        imgSrc: './images/boko-Cropped.png',
+    },
+    {
+        name: 'Joy',
+        college: 'Baylor University',
+        info: 'Put Info Here',
+        imgSrc: './images/Joy-Cropped.png',
+    },
+    {
+        name: 'Peruna',
+        college: 'Southern Methodist University',
+        info: 'Put Info Here',
+        imgSrc: './images/Peruna-Cropped.png',
+    },
+    {
+        name: 'Reveille X',
+        college: 'Texas A&M University',
+        info: 'Put Info Here',
+        imgSrc: './images/reveille-Cropped.png',
+    },
+    {
+        name: 'Sammy the Owl',
+        college: 'Rice University',
+        info: 'Put Info Here',
+        imgSrc: './images/sammy-Cropped.png',
+    },
+    {
+        name: 'Raider Red',
+        college: 'Texas Tech University',
+        info: 'Put Info Here',
+        imgSrc: './images/raider-Cropped.png',
+    },
+    {
+        name: 'Bucky the Buffalo',
+        college: 'West Texas A&M University',
+        info: 'Put Info Here',
+        imgSrc: './images/Bucky-Cropped.png',
     },
     {
         name: 'Scrappy',
