@@ -41,8 +41,19 @@ for(let i = 0; i < cols.length; i++) {
             game.board.placeTile(randCol, 2);
             numTurns++;
         } else {
-            game.board.placeTile(makeMove(), 2);
-            console.log('are we here');
+            switch(game.player2.difficulty) {
+                case 'easy':
+                   game.board.placeTile(makeEasyMove(), 2);
+                   break;
+                case 'normal':
+                    game.board.placeTile(makeNormalMove(), 2);
+                    break;
+                case 'hard':
+                    console.log('we are hard');
+                    game.board.placeTile(makeHardMove(), 2);
+                    break;
+            }
+            
             numTurns++;
         }
         
@@ -74,9 +85,68 @@ function removeListeners() {
     }
 }
 
+function makeEasyMove() {
+    let strBoard = JSON.stringify(game.board.board);
+    let clone = new Board(JSON.parse(strBoard));
 
+    const valid = [0, 0, 0, 0, 0, 0, 0];
 
-function makeMove() {
+    let maxConts = 0;
+    let bestCol = -1;
+
+    let randNum = Math.random() * 1;
+
+    for(let i = 0; i < 7; i++)
+    {
+        clone = new Board(JSON.parse(strBoard));
+
+        valid[i] = clone.placeTile(i, 2);
+        if(clone.getStatus() == 2) {
+            if(randNum <= 0.40) {
+               return i; 
+            }
+            else {
+                return Math.floor(Math.random() * 7);
+            }
+        }
+            
+
+        let continues = 7;
+        for(let j = 0; j < 7; j++)
+        {
+            const strClone2 = JSON.stringify(clone.board);
+            const clone2 = new Board(JSON.parse(strClone2));
+            let valid2 = clone2.placeTile(j, 1);
+
+            if(clone2.getStatus() == 1 && valid2) {
+                continues--;
+            }
+                
+        }
+
+        if(continues > maxConts)
+        {
+            maxConts = continues;
+            bestCol = i;
+        }
+    }
+
+    if(valid[bestCol] && randNum <= 0.50) {
+        return bestCol;
+    }   
+    else
+    {
+        for(let i = 0; i < 7; i++)
+        {
+            if(valid[i])
+                return i;
+        }
+    }
+
+    return bestCol;
+}
+
+function makeNormalMove() {
     let strBoard = JSON.stringify(game.board.board);
     let clone = new Board(JSON.parse(strBoard));
 
@@ -99,6 +169,69 @@ function makeMove() {
             const strClone2 = JSON.stringify(clone.board);
             const clone2 = new Board(JSON.parse(strClone2));
             let valid2 = clone2.placeTile(j, 1);
+
+            if(clone2.getStatus() == 1 && valid2) {
+                continues--;
+            }
+                
+        }
+
+        if(continues > maxConts)
+        {
+            maxConts = continues;
+            bestCol = i;
+        }
+    }
+
+    if(valid[bestCol])
+        return bestCol;
+    else
+    {
+        for(let i = 0; i < 7; i++)
+        {
+            if(valid[i])
+                return i;
+        }
+    }
+
+    return bestCol;
+}
+
+function makeHardMove() {
+    let strBoard = JSON.stringify(game.board.board);
+    let clone = new Board(JSON.parse(strBoard));
+
+    const valid = [0, 0, 0, 0, 0, 0, 0];
+
+    let maxConts = 0;
+    let bestCol = -1;
+
+    for(let i = 0; i < 7; i++)
+    {
+        clone = new Board(JSON.parse(strBoard));
+
+        valid[i] = clone.placeTile(i, 2);
+        if(clone.getStatus() == 2)
+            return i;
+
+        let continues = 7;
+        for(let j = 0; j < 7; j++)
+        {
+            const strClone2 = JSON.stringify(clone.board);
+            const clone2 = new Board(JSON.parse(strClone2));
+            let valid2 = clone2.placeTile(j, 1);
+
+            for(let k = 0; k < 7; k++) {
+                const strClone3 = JSON.stringify(clone2.board);
+                const clone3 = new Board(JSON.parse(strClone3));
+                let valid3 = clone3.placeTile(j, 2);
+                if(clone3.getStatus() == 2 && valid3) {
+                    continues++;
+                }
+                else {
+                    
+                }
+            }
 
             if(clone2.getStatus() == 1 && valid2) {
                 continues--;
