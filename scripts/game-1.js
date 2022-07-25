@@ -209,7 +209,6 @@ function makeHardMove() {
         valid[i] = clone.placeTile(i, 2);
         console.log(valid[i]);
         if(!valid[i]) {
-            console.log('not a valid move homie');
             continue;
         }
             
@@ -277,18 +276,13 @@ function makeHardMove() {
             bestCol[0] = i;
             bestCol[1] = losses;
             bestCol[2] = wins;
-            console.log('more wins');
         }
     }
 
     if(valid[bestCol[0]])
         return bestCol[0];
-    else
-    {
-        console.log(valid[bestCol[0]]);
+    else{
         return Math.floor(Math.random() * 7);
     }
         
 }
-
-console.log(game.player2.difficulty);
