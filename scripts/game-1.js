@@ -36,7 +36,7 @@ for(let i = 0; i < cols.length; i++) {
         game.board.placeTile(col, 1);
         numTurns++;
         
-        if(numTurns <= 4){
+        if(numTurns <= 4 && game.player2.difficulty !== 'hard'){
             let randCol = Math.floor(Math.random() * 7);
             game.board.placeTile(randCol, 2);
             numTurns++;
@@ -49,7 +49,6 @@ for(let i = 0; i < cols.length; i++) {
                     game.board.placeTile(makeNormalMove(), 2);
                     break;
                 case 'hard':
-                    console.log('we are hard');
                     game.board.placeTile(makeHardMove(), 2);
                     break;
             }
@@ -202,60 +201,94 @@ function makeHardMove() {
     let clone = new Board(JSON.parse(strBoard));
 
     const valid = [0, 0, 0, 0, 0, 0, 0];
+    const bestCol = [0, 100, 0]; //first index is the column and the second index is the number of possible losses, and third column is the possible wins.
 
-    let maxConts = 0;
-    let bestCol = -1;
-
-    for(let i = 0; i < 7; i++)
-    {
+    for(let i = 0; i < 7; i++) {
         clone = new Board(JSON.parse(strBoard));
 
         valid[i] = clone.placeTile(i, 2);
-        if(clone.getStatus() == 2)
+        console.log(valid[i]);
+        if(!valid[i]) {
+            console.log('not a valid move homie');
+            continue;
+        }
+            
+        if(clone.getStatus() == 2){
             return i;
+        }
+            
 
-        let continues = 7;
+        let wins = 0;
+        let losses = 0;
+        let total = 0;
+
         for(let j = 0; j < 7; j++)
         {
             const strClone2 = JSON.stringify(clone.board);
             const clone2 = new Board(JSON.parse(strClone2));
-            let valid2 = clone2.placeTile(j, 1);
+
+            if(clone2.placeTile(j, 1))
+                total++;
+            else
+                continue;
+
+            if(clone2.getStatus() == 1) {
+                losses++;
+            }
 
             for(let k = 0; k < 7; k++) {
                 const strClone3 = JSON.stringify(clone2.board);
                 const clone3 = new Board(JSON.parse(strClone3));
-                let valid3 = clone3.placeTile(j, 2);
-                if(clone3.getStatus() == 2 && valid3) {
-                    continues++;
-                }
-                else {
-                    
-                }
-            }
 
-            if(clone2.getStatus() == 1 && valid2) {
-                continues--;
-            }
+                if(clone3.placeTile(j, 2))
+                    total++;
+                else
+                    continue;
+
+                if(clone3.getStatus() == 2) {
+                    wins++;
+                }
                 
+                for(let l = 0; l < 7; l++) {
+                    const strClone4 = JSON.stringify(clone3.board);
+                    const clone4 = new Board(JSON.parse(strClone4));
+    
+                    if(clone4.placeTile(l, 1))
+                        total++;
+                    else
+                        continue;
+    
+                    if(clone4.getStatus() == 1) {
+                        losses++;
+                    } 
+                }
+            }   
+
         }
 
-        if(continues > maxConts)
-        {
-            maxConts = continues;
-            bestCol = i;
+        if(losses < bestCol[1]) {
+            console.log(losses + ' < ' + bestCol[1]);
+            bestCol[0] = i;
+            bestCol[1] = losses;
+            bestCol[2] = wins;
+        }
+
+        if(losses === bestCol[1] && wins > bestCol[2]) {
+            bestCol[0] = i;
+            bestCol[1] = losses;
+            bestCol[2] = wins;
+            console.log('more wins');
         }
     }
 
-    if(valid[bestCol])
-        return bestCol;
+    if(valid[bestCol[0]])
+        return bestCol[0];
     else
     {
-        for(let i = 0; i < 7; i++)
-        {
-            if(valid[i])
-                return i;
-        }
+        console.log(valid[bestCol[0]]);
+        return Math.floor(Math.random() * 7);
     }
-
-    return bestCol;
+        
 }
+
+console.log(game.player2.difficulty);
