@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" class="bg-info">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Menu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+  
+  <body>
+    
+    <div class="container-auto">
+      <div class="row bg-info">
+
+        <div class="col-3">
+          <div class="row justify-content-center">
+            <div class="col-3 my-5 rounded-circle bg-danger" style="width:10rem; height:10rem"></div>
+          </div>
+          <div class="row">
+            <div class="col"></div>
+            <div class="col my-2">
+              <img id="player1" class="mx-auto" src="./images/selected.png" alt="scrappy" style="width:10rem; height:10rem">
+            </div>
+            <div class="col"></div>
+            <h1 class="text-center">Player 1</h1>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="row mb-5 mt-5"><h1 id="winner" class="text-center"></h1></div>
+          <div class="row mt-0">
+            <table id="table" class="table table-bordered border-4 my-auto mx-auto bg-primary">
+              <thead id="tableHead" class="border-0">
+                <tr>
+                  <td id="h0" width="10%" style="border: 0;"><div class="rounded-circle bg-danger invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="h1" width="10%" style="border: 0;"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="h2" width="10%" style="border: 0;"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="h3" width="10%" style="border: 0;"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="h4" width="10%" style="border: 0;"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="h5" width="10%" style="border: 0;"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="h6" width="10%" style="border: 0;"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="r0">
+                  <td id="c0" width="10%"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="c1" width="10%"></td>
+                  <td id="c2" width="10%"></td>
+                  <td id="c3" width="10%"></td>
+                  <td id="c4" width="10%"></td>
+                  <td id="c5" width="10%"></td>
+                  <td id="c6" width="10%"></td>
+                </tr>
+                <tr id="r1">
+                  <td id="c0" width="10%"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="c1" width="10%"></td>
+                  <td id="c2" width="10%"></td>
+                  <td id="c3" width="10%"></td>
+                  <td id="c4" width="10%"></td>
+                  <td id="c5" width="10%"></td>
+                  <td id="c6" width="10%"></td>
+                </tr>
+                <tr id="r2" >
+                  <td id="c0" width="10%"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="c1" width="10%"></td>
+                  <td id="c2" width="10%"></td>
+                  <td id="c3" width="10%"></td>
+                  <td id="c4" width="10%"></td>
+                  <td id="c5" width="10%"></td>
+                  <td id="c6" width="10%"></td>
+                </tr>
+                <tr id="r3">
+                  <td id="c0" width="10%"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="c1" width="10%"></td>
+                  <td id="c2" width="10%"></td>
+                  <td id="c3" width="10%"></td>
+                  <td id="c4" width="10%"></td>
+                  <td id="c5" width="10%"></td>
+                  <td id="c6" width="10%"></td>
+                </tr>
+                <tr id="r4">
+                  <td id="c0" width="10%"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="c1" width="10%"></td>
+                  <td id="c2" width="10%"></td>
+                  <td id="c3" width="10%"></td>
+                  <td id="c4" width="10%"></td>
+                  <td id="c5" width="10%"></td>
+                  <td id="c6" width="10%"></td>
+                </tr>
+                <tr id="r5">
+                  <td id="c0" width="10%"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="c1" width="10%"></td>
+                  <td id="c2" width="10%"></td>
+                  <td id="c3" width="10%"></td>
+                  <td id="c4" width="10%"></td>
+                  <td id="c5" width="10%"></td>
+                  <td id="c6" width="10%"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row justify-content-center">
+            <a id="menu" class="btn btn-dark fs-4 mt-4 d-none" href="./index.html" role="button" style="width: 12rem">Main Menu</a>
+          </div>
+          
+        </div>
+
+        <div class="col-3 position-absolute bottom-0 end-0">
+          <div class="row justify-content-center">
+            <div class="col-3 my-5 rounded-circle bg-warning" style="width:10rem; height:10rem"></div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col"></div>
+            <div class="col my-2">
+              <img id="player2" class="mx-auto" src="./images/selected.png" alt="scrappy" style="width:10rem; height:10rem">
+            </div>
+            <div class="col"></div>
+            <h1 class="text-center">Player 2</h1>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+    <script src="/scripts/menu-functions.js"></script>
+    <script type="module" src="/scripts/main.js"></script>
+  </body>
+</html>
