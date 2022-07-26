@@ -1,9 +1,11 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAuth, signInAnonymously } from "firebase/auth";
-import { getDatabase } from "firebase/database";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-auth.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-database.js";
+import {Board} from './board.js';
+
+const game = JSON.parse(localStorage.getItem("game"));
+//game.board = new Board();
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -18,14 +20,39 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-
+const database = getDatabase(app);
+const auth = getAuth(app);
 
 (function () {
 
+  let playerId;
+  let playerRef;
 
-    const auth = getAuth();
-    signInAnonymously(auth)
+  onAuthStateChanged(auth, (user) => {
+    console.log(user);
+    if(user) {
+      playerId = user.uid;
+      playerRef = ref(database, `players/${playerId}`);
+
+      
+
+      set(playerRef, {
+        id: playerId,
+        turn: 'false',
+        //character: game.player1.character,
+      });
+    } else {
+      console.log('user signed out');
+    }
+  })
+
+  signInAnonymously(auth)
+    .then(() => {
+      console.log('signed In');
+    })
+    .catch((error) => { 
+      console.log(error.code, error.message);
+    });
 
 
 })();

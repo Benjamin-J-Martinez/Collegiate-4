@@ -18,7 +18,4 @@ function renderGame(game) {
     }
 }
 
-function addHoverListener(event) {
-    
-}
 

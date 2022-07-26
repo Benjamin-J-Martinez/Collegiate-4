@@ -2,28 +2,44 @@ const characterImgs = document.getElementsByClassName('col')[0].getElementsByTag
 const selectedp1 = document.getElementById('selectedp1');
 const selectedp2 = document.getElementById('selectedp2')
 const selectButton = document.getElementById('select');
+const selectedBody1 = document.getElementById('body1');
+const selectedBody2 = document.getElementById('body2');
 
 let clickedOnce = false;
 let clickedTwice = false;
 let finish = false;
 
-function displayCharacter(image, player=1) {
-    if(player === 1)
-        selectedp1.src = image;
+function displayCharacter(character, player=1) {
+    if(player === 1) {
+        selectedp1.src = characters[character].imgSrc;
+        selectedBody1.getElementsByTagName('h5')[0].innerHTML = characters[character].name;
+        selectedBody1.getElementsByTagName('p')[0].innerHTML = characters[character].info;
+    }
+        
     
-    if(player === 2)
-        selectedp2.src = image;
+    if(player === 2) {
+        selectedp2.src = characters[character].imgSrc;
+        selectedBody2.getElementsByTagName('h5')[0].innerHTML = characters[character].name;
+        selectedBody2.getElementsByTagName('p')[0].innerHTML = characters[character].info;
+    }
 }
 
 function selectCharacter() { localStorage.setItem('game', JSON.stringify(game)); }
 
 function highLightCharacter(event) {
     if(!clickedTwice) {
-        selectedp1.src = './images/' + event.target.id + '-Portrait.png';
-        game.player1.character.imgSrc = './images/' + event.target.id + '-Cropped.png';
+        const characterID = event.target.id[event.target.id.length-1];
+        selectedp1.src = characters[characterID].imgSrc;
+        selectedBody1.getElementsByTagName('h5')[0].innerHTML = characters[characterID].name;
+        selectedBody1.getElementsByTagName('p')[0].innerHTML = characters[characterID].info;
+        game.player1.character.imgSrc = characters[characterID].imgSrc;
+
     } else{
-        selectedp2.src = './images/' + event.target.id + '-Portrait.png';
-        game.player2.character.imgSrc = './images/' + event.target.id + '-Cropped.png';
+        const characterID = event.target.id[event.target.id.length-1];
+        selectedp2.src = characters[characterID].imgSrc;
+        selectedBody2.getElementsByTagName('h5')[0].innerHTML = characters[characterID].name;
+        selectedBody2.getElementsByTagName('p')[0].innerHTML = characters[characterID].info;
+        game.player2.character.imgSrc = characters[characterID].imgSrc;
         selectCharacter();
         finish = true;
     }
@@ -43,8 +59,7 @@ for(let i = 0; i < characterImgs.length; i++) {
 
 selectButton.addEventListener('click', () => {
     for(let i = 0; i < characterImgs.length; i++) {
-        selectedSrc = './images/' + characterImgs[i].id + '-Portrait.png';
-        parameterStr = "displayCharacter('" + selectedSrc + "', 2)";
+        parameterStr = "displayCharacter(" + i + ", 2)";
         characterImgs[i].setAttribute('onmouseover', parameterStr);
         clickedTwice = true;
     }
@@ -115,18 +130,21 @@ const characters = [
         info: 'Based in Canyon, Bucky is the alternative to the live mascot, "Thunder the Buffalo." We probably should have used Thunder instead, but I dont think anyone from Canyon will care.',
         imgSrc: './images/Bucky-Cropped.png',
     },
-    {
-        name: 'Scrappy',
-        college: 'University of North Texas', 
-        info: 'Scrappy is the mascot of the University of North Texas. The name Scrappy wsa chosen by students in 1995.',
-        imgSrc: './images/selected.png',
-    }
-
 ]
 
 const game = JSON.parse(localStorage.getItem('game'));
 game.player1.character = characters[0];
 game.player2.character = characters[1];
+
+if(game.mode === 'create') {
+    selectButton.setAttribute('href', './create.html');
+}
+
+if(game.mode === 'join') {
+    selectButton.setAttribute('href', './join.html');
+}
+
+
 
 
 
