@@ -16,14 +16,16 @@ for(let i = 0; i < cols.length; i++) {
     cols[i].addEventListener('mouseover', (event) => {
         if(game.board.getStatus())
             return;
-
+            
         const col = event.target.id;
         const id = 'h' + col[1];
+
         if(p1Turn)
             document.getElementById(id).className = 'rounded-circle bg-danger mx-auto';
         else 
             document.getElementById(id).className = 'rounded-circle bg-warning mx-auto';
     })
+
 
     cols[i].addEventListener('mouseout', (event) => {
         const col = event.target.id;

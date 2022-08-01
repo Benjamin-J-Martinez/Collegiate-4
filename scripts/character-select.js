@@ -29,6 +29,10 @@ function selectCharacter() { localStorage.setItem('game', JSON.stringify(game));
 function highLightCharacter(event) {
     if(!clickedTwice) {
         const characterID = event.target.id[event.target.id.length-1];
+        for(let i = 0; i < 7; i++) {
+            document.getElementById(`card${i}`).className = "card-auto border border-light border-4";
+        }
+        document.getElementById(`card${characterID}`).className = "card-auto border border-danger border-4";
         selectedp1.src = characters[characterID].imgSrc;
         selectedBody1.getElementsByTagName('h5')[0].innerHTML = characters[characterID].name;
         selectedBody1.getElementsByTagName('p')[0].innerHTML = characters[characterID].info;
@@ -36,6 +40,10 @@ function highLightCharacter(event) {
 
     } else{
         const characterID = event.target.id[event.target.id.length-1];
+        for(let i = 0; i < 7; i++) {
+            document.getElementById(`card${i}`).className = "card-auto border border-light border-4";
+        }
+        document.getElementById(`card${characterID}`).className = "card-auto border border-warning border-4";
         selectedp2.src = characters[characterID].imgSrc;
         selectedBody2.getElementsByTagName('h5')[0].innerHTML = characters[characterID].name;
         selectedBody2.getElementsByTagName('p')[0].innerHTML = characters[characterID].info;
