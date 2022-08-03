@@ -8,6 +8,8 @@ const selectedBody2 = document.getElementById('body2');
 let clickedOnce = false;
 let clickedTwice = false;
 let finish = false;
+let p1Id = -1;
+let p2Id = -2;
 
 function displayCharacter(character, player=1) {
     if(player === 1) {
@@ -29,7 +31,8 @@ function selectCharacter() { localStorage.setItem('game', JSON.stringify(game));
 function highLightCharacter(event) {
     if(!clickedTwice) {
         const characterID = event.target.id[event.target.id.length-1];
-        for(let i = 0; i < 7; i++) {
+
+        for(let i = 0; i < 10; i++) {
             document.getElementById(`card${i}`).className = "card-auto border border-light border-4";
         }
         document.getElementById(`card${characterID}`).className = "card-auto border border-danger border-4";
@@ -37,11 +40,15 @@ function highLightCharacter(event) {
         selectedBody1.getElementsByTagName('h5')[0].innerHTML = characters[characterID].name;
         selectedBody1.getElementsByTagName('p')[0].innerHTML = characters[characterID].info;
         game.player1.character.imgSrc = characters[characterID].imgSrc;
+        p1Id = characterID;
 
     } else{
         const characterID = event.target.id[event.target.id.length-1];
-        for(let i = 0; i < 7; i++) {
-            document.getElementById(`card${i}`).className = "card-auto border border-light border-4";
+        if(characterID === p1Id)
+            return;
+        for(let i = 0; i < 10; i++) {
+            if(p1Id != i)
+                document.getElementById(`card${i}`).className = "card-auto border border-light border-4";
         }
         document.getElementById(`card${characterID}`).className = "card-auto border border-warning border-4";
         selectedp2.src = characters[characterID].imgSrc;
@@ -52,7 +59,6 @@ function highLightCharacter(event) {
         finish = true;
     }
         
-
     clickedOnce = true;
     if(clickedOnce) {
         for(let j = 0; j < characterImgs.length; j++) {
@@ -141,8 +147,8 @@ const characters = [
 ]
 
 const game = JSON.parse(localStorage.getItem('game'));
-game.player1.character = characters[0];
-game.player2.character = characters[1];
+game.player1.character = JSON.parse(JSON.stringify(characters[0]));
+game.player2.character = JSON.parse(JSON.stringify(characters[1]));
 
 if(game.mode === 'create') {
     selectButton.setAttribute('href', './create.html');
