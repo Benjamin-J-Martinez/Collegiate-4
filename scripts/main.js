@@ -42,6 +42,7 @@ for(let i = 0; i < cols.length; i++) {
         if(game.board.getStatus() === 1) {
           const menuButton = document.getElementById('menu');
           document.getElementById('winner').innerHTML = 'Player 1 Wins!!!';
+          document.getElementById('winner').className = 'text-center text-danger';
           menuButton.className = 'btn btn-dark fs-4 mt-4';
           removeListeners();
           delete game.board;
@@ -50,6 +51,7 @@ for(let i = 0; i < cols.length; i++) {
             const menuButton = document.getElementById('menu');
             menuButton.className = 'btn btn-dark fs-4 mt-4';
             document.getElementById('winner').innerHTML = 'Player 2 Wins!!!';
+            document.getElementById('winner').className = 'text-center text-warning';
             removeListeners();
             delete game.board;
         }
@@ -60,6 +62,9 @@ for(let i = 0; i < cols.length; i++) {
 
 function removeListeners() {
     for(let i = 0; i < cols.length; i++) {
-        cols[i].removeEventListener('click', );
+        const col = cols[i];
+        const id = 'h' + col[1];
+        document.getElementById(id).className = 'rounded-circle bg-danger mx-auto invisible';
+        cols[i].replaceWith(cols[i].cloneNode(true));
     }
 }

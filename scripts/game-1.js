@@ -84,7 +84,10 @@ for(let i = 0; i < cols.length; i++) {
 
 function removeListeners() {
     for(let i = 0; i < cols.length; i++) {
-        cols[i].removeEventListener('click', );
+        const col = cols[i];
+        const id = 'h' + col[1];
+        document.getElementById(id).className = 'rounded-circle bg-danger mx-auto invisible';
+        cols[i].replaceWith(cols[i].cloneNode(true));
     }
 }
 
@@ -270,7 +273,6 @@ function makeHardMove() {
         }
 
         if(losses < bestCol[1]) {
-            console.log(losses + ' < ' + bestCol[1]);
             bestCol[0] = i;
             bestCol[1] = losses;
             bestCol[2] = wins;

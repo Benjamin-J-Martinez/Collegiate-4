@@ -4,11 +4,9 @@ function renderGame(game) {
         for(let j = 0; j < currentBoard[0].length; j++) {
             const row = 'r' + i;
             const col = j;
-
             const tile = document.getElementById(row).getElementsByTagName('td')[col].getElementsByTagName('div')[0];
 
             if(currentBoard[i][j] === 1) {
-                console.log(tile);
                 tile.className = 'rounded-circle bg-danger mx-auto';
             }
 
