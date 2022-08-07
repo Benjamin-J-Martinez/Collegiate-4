@@ -100,7 +100,7 @@ const characters = [
         name: 'Bevo',
         college: 'University of Texas',
         info: 'Based in Austin, Bevo was originally called "Bo," though his name was changed to "Bevo" at the 1916 Thanksgiving Day game by Ben Dyer, the campus magazine editor.',
-        imgSrc: './images/Bevo-Cropped.png',
+        imgSrc: './images/bevo-Cropped.png',
     },
     {
         name: 'Boko the Bobcat',
@@ -112,13 +112,13 @@ const characters = [
         name: 'Joy',
         college: 'Baylor University',
         info: 'Based in Waco, Joy is one of two live bears on the Baylor Campus. Joys full name is "Judge Joy Reyonolds" named after Joy Renolds, the wife of the 11th president of Baylor.',
-        imgSrc: './images/Joy-Cropped.png',
+        imgSrc: './images/joy-Cropped.png',
     },
     {
         name: 'Peruna',
         college: 'Southern Methodist University',
         info: 'Based in Dallas, the name Peruna originated from a well known "cure-all" elixir from the early 1900s. It was very popular during prohibition, since it contained 18% alchohol.',
-        imgSrc: './images/Peruna-Cropped.png',
+        imgSrc: './images/peruna-Cropped.png',
     },
     {
         name: 'Reveille X',
@@ -142,7 +142,7 @@ const characters = [
         name: 'Bucky the Buffalo',
         college: 'West Texas A&M University',
         info: 'Based in Canyon, Bucky is the alternative to the live mascot, "Thunder the Buffalo." We probably should have used Thunder instead, but I dont think anyone from Canyon will care.',
-        imgSrc: './images/Bucky-Cropped.png',
+        imgSrc: './images/bucky-Cropped.png',
     },
 ]
 
