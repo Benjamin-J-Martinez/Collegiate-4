@@ -17,7 +17,7 @@ const buttons = document.getElementsByClassName('col');
 for(let i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', event => {
         game.mode = buttons[i].getElementsByTagName('a')[0].id;
-        localStorage.setItem('game', JSON.stringify(game));
+        sessionStorage.setItem('game', JSON.stringify(game));
     })
 }
 

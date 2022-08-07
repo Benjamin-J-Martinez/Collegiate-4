@@ -26,7 +26,7 @@ function displayCharacter(character, player=1) {
     }
 }
 
-function selectCharacter() { localStorage.setItem('game', JSON.stringify(game)); }
+function selectCharacter() { sessionStorage.setItem('game', JSON.stringify(game)); }
 
 function highLightCharacter(event) {
     if(!clickedTwice) {
@@ -146,7 +146,7 @@ const characters = [
     },
 ]
 
-const game = JSON.parse(localStorage.getItem('game'));
+const game = JSON.parse(sessionStorage.getItem('game'));
 game.player1.character = JSON.parse(JSON.stringify(characters[0]));
 game.player2.character = JSON.parse(JSON.stringify(characters[1]));
 

@@ -1,6 +1,6 @@
 import {Board} from './board.js';
 
-const game = JSON.parse(localStorage.getItem("game"));
+const game = JSON.parse(sessionStorage.getItem("game"));
 game.board = new Board();
 
 document.getElementById('player1').src = game.player1.character.imgSrc;

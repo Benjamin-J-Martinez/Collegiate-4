@@ -4,7 +4,7 @@ import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gsta
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-database.js";
 import {Board} from './board.js';
 
-const game = JSON.parse(localStorage.getItem("game"));
+const game = JSON.parse(sessionStorage.getItem("game"));
 //game.board = new Board();
 
 // Your web app's Firebase configuration
