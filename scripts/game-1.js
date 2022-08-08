@@ -30,18 +30,6 @@ const board = new Board();
   onAuthStateChanged(auth, (user) => {
     if(user) {
       playerId = user.uid;
-
-      playerRef = ref(database, `players/${playerId}/setting`);
-      get(playerRef).then((snapshot) => {
-          if (snapshot.exists()) {
-            document.getElementById('mode').href = `${snapshot.val()}.css`;
-          } else {
-            console.log("No data available");
-          }
-      }).catch((error) => {
-        console.error(error);
-      });
-
       playerRef = ref(database, `players/${playerId}/player1/character`);
       get(playerRef).then((snapshot) => {
         if (snapshot.exists()) {
@@ -68,7 +56,6 @@ const board = new Board();
       get(playerRef).then((snapshot) => {
         if (snapshot.exists()) {
             difficulty = snapshot.val();
-            console.log(difficulty);
         } else {
           console.log("No data available");
         }
@@ -90,7 +77,6 @@ const board = new Board();
       console.log(error.code, error.message);
     });
 
-      console.log(difficulty);
 
 })();
 
@@ -108,24 +94,27 @@ for(let i = 0; i < cols.length; i++) {
             
         const col = event.target.id;
         const id = 'h' + col[1];
+        const tileDiv = document.getElementById(id).getElementsByTagName('div')[0];
 
         if(p1Turn)
-            document.getElementById(id).className = 'rounded-circle bg-danger mx-auto';
+            tileDiv.className = 'rounded-circle bg-danger mx-auto';
         else 
-            document.getElementById(id).className = 'rounded-circle bg-warning mx-auto';
+            tileDiv.className = 'rounded-circle bg-warning mx-auto';
     })
 
 
     cols[i].addEventListener('mouseout', (event) => {
         const col = event.target.id;
         const id = 'h' + col[1];
-        document.getElementById(id).className = 'rounded-circle bg-danger mx-auto invisible';
+        const tileDiv = document.getElementById(id).getElementsByTagName('div')[0];
+        tileDiv.className = 'rounded-circle bg-danger mx-auto invisible';
     })
 
     cols[i].addEventListener('click', (event) => {
         const col = event.target.id[1];
         board.placeTile(col, 1);
         numTurns++;
+        renderGame(board);
         
         if(numTurns <= 4 && difficulty !== 'hard'){
             let randCol = Math.floor(Math.random() * 7);
@@ -146,25 +135,31 @@ for(let i = 0; i < cols.length; i++) {
             
             numTurns++;
         }
-        
-
-        renderGame(board);
 
         if(board.getStatus() === 1) {
           const menuButton = document.getElementById('menu');
           document.getElementById('winner').innerHTML = 'Player 1 Wins!!!';
           document.getElementById('winner').className = 'text-center text-danger';
           menuButton.className = 'btn btn-dark fs-4 mt-4';
+          const rematchButton = document.getElementById('rematch');
+          rematchButton.className = 'btn btn-dark fs-4 mx-5 mt-4';
           removeListeners();
+          return;
         }
         else if(board.getStatus() === 2) {
             const menuButton = document.getElementById('menu');
             menuButton.className = 'btn btn-dark fs-4 mt-4';
+            const rematchButton = document.getElementById('rematch');
+            rematchButton.className = 'btn btn-dark fs-4 mx-5 mt-4';
             document.getElementById('winner').innerHTML = 'Player 2 Wins!!!';
             document.getElementById('winner').className = 'text-center text-warning';
             removeListeners();
+            renderGame(board);
+            return;
         }
-            
+
+        renderGame(board);
+
     })
 }
 
@@ -301,7 +296,6 @@ function makeHardMove() {
         clone = new Board(JSON.parse(strBoard));
 
         valid[i] = clone.placeTile(i, 2);
-        console.log(valid[i]);
         if(!valid[i]) {
             continue;
         }
@@ -333,7 +327,7 @@ function makeHardMove() {
                 const strClone3 = JSON.stringify(clone2.board);
                 const clone3 = new Board(JSON.parse(strClone3));
 
-                if(clone3.placeTile(j, 2))
+                if(clone3.placeTile(k, 2))
                     total++;
                 else
                     continue;
@@ -353,7 +347,21 @@ function makeHardMove() {
     
                     if(clone4.getStatus() == 1) {
                         losses++;
-                    } 
+                    }
+                    
+                    for(let m = 0; m < 7; m++) {
+                        const strClone5 = JSON.stringify(clone4.board);
+                        const clone5 = new Board(JSON.parse(strClone5));
+        
+                        if(clone5.placeTile(m, 2))
+                            total++;
+                        else
+                            continue;
+        
+                        if(clone5.getStatus() == 2) {
+                            wins++;
+                        }
+                    }
                 }
             }   
 

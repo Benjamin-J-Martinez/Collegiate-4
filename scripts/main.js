@@ -28,20 +28,6 @@ const board = new Board();
     onAuthStateChanged(auth, (user) => {
       if(user) {
         playerId = user.uid;
-
-
-        playerRef = ref(database, `players/${playerId}/setting`);
-      get(playerRef).then((snapshot) => {
-          if (snapshot.exists()) {
-            document.getElementById('mode').href = `${snapshot.val()}.css`;
-          } else {
-            console.log("No data available");
-          }
-      }).catch((error) => {
-        console.error(error);
-      });
-
-
         playerRef = ref(database, `players/${playerId}/player1/character`);
         get(playerRef).then((snapshot) => {
           if (snapshot.exists()) {
@@ -91,16 +77,19 @@ for(let i = 0; i < cols.length; i++) {
 
         const col = event.target.id;
         const id = 'h' + col[1];
+        const tileDiv = document.getElementById(id).getElementsByTagName('div')[0];
+
         if(p1Turn)
-            document.getElementById(id).className = 'rounded-circle bg-danger mx-auto';
+            tileDiv.className = 'rounded-circle bg-danger mx-auto';
         else 
-            document.getElementById(id).className = 'rounded-circle bg-warning mx-auto';
+            tileDiv.className = 'rounded-circle bg-warning mx-auto';
     })
 
     cols[i].addEventListener('mouseout', (event) => {
         const col = event.target.id;
         const id = 'h' + col[1];
-        document.getElementById(id).className = 'rounded-circle bg-danger mx-auto invisible';
+        const tileDiv = document.getElementById(id).getElementsByTagName('div')[0];
+        tileDiv.className = 'rounded-circle bg-danger mx-auto invisible';
     })
 
     cols[i].addEventListener('click', (event) => {
@@ -114,17 +103,21 @@ for(let i = 0; i < cols.length; i++) {
         p1Turn = !p1Turn;
         if(board.getStatus() === 1) {
           const menuButton = document.getElementById('menu');
+          const rematchButton = document.getElementById('rematch');
+          rematchButton.className = 'btn btn-dark fs-4 mx-5 mt-4';
           document.getElementById('winner').innerHTML = 'Player 1 Wins!!!';
           document.getElementById('winner').className = 'text-center text-danger';
           menuButton.className = 'btn btn-dark fs-4 mt-4';
           removeListeners();
         }
         else if(board.getStatus() === 2) {
-            const menuButton = document.getElementById('menu');
-            menuButton.className = 'btn btn-dark fs-4 mt-4';
-            document.getElementById('winner').innerHTML = 'Player 2 Wins!!!';
-            document.getElementById('winner').className = 'text-center text-warning';
-            removeListeners();
+          const menuButton = document.getElementById('menu');
+          menuButton.className = 'btn btn-dark fs-4 mt-4';
+          const rematchButton = document.getElementById('rematch');
+          rematchButton.className = 'btn btn-dark fs-4 mx-5 mt-4';
+          document.getElementById('winner').innerHTML = 'Player 2 Wins!!!';
+          document.getElementById('winner').className = 'text-center text-warning';
+          removeListeners();
         }
             
     })

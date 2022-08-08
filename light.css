@@ -8,14 +8,6 @@ body {
     background-size: 52% 80%;
 }
 
-p {
-    color: black !important;
-}
-
-h1 {
-    color: black !important;
-}
-
-h5 {
+p, h1, h3, h5 {
     color: black !important;
 }

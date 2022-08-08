@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>2-Player</title>
     <link id="mode" rel="stylesheet" href="dark.css">
+    <script src="./scripts/dark-light.js" type="module" async></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
   </head>
   
@@ -15,12 +16,12 @@
 
         <div class="col-3">
           <div class="row justify-content-center">
-            <div class="col-3 my-5 rounded-circle bg-danger" style="width:10rem; height:10rem"></div>
+            <div class="col-3 my-5 rounded-circle border border-dark bg-danger" style="width:10rem; height:10rem"></div>
           </div>
           <div class="row">
             <div class="col"></div>
             <div class="col my-2">
-              <img id="player1" class="mx-auto" src="./images/selected.png" alt="scrappy" style="width:10rem; height:10rem">
+              <img id="player1" class="mx-auto border border-dark" src="./images/selected.png" alt="scrappy" style="width:10rem; height:10rem">
             </div>
             <div class="col"></div>
             <h1 class="text-center text-danger">Player 1</h1>
@@ -33,13 +34,13 @@
             <table id="table" class="table table-bordered border-4 border-dark my-auto mx-auto">
               <thead id="tableHead" class="border-0">
                 <tr>
-                  <td id="h0" width="10%" style="border: 0;"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
-                  <td id="h1" width="10%" style="border: 0;"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
-                  <td id="h2" width="10%" style="border: 0;"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
-                  <td id="h3" width="10%" style="border: 0;"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
-                  <td id="h4" width="10%" style="border: 0;"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
-                  <td id="h5" width="10%" style="border: 0;"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
-                  <td id="h6" width="10%" style="border: 0;"><div class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="h0" width="10%" style="border: 0;"><div id="d0" class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="h1" width="10%" style="border: 0;"><div id="d1" class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="h2" width="10%" style="border: 0;"><div id="d2" class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="h3" width="10%" style="border: 0;"><div id="d3" class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="h4" width="10%" style="border: 0;"><div id="d4" class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="h5" width="10%" style="border: 0;"><div id="d5" class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
+                  <td id="h6" width="10%" style="border: 0;"><div id="d6" class="rounded-circle bg-danger mx-auto invisible" style="width:5rem; height:5rem"></div></td>
                 </tr>
               </thead>
               <tbody>
@@ -101,19 +102,20 @@
             </table>
           </div>
           <div class="row justify-content-center">
-            <a id="menu" class="btn btn-dark fs-4 mt-4 d-none" href="./index.html" role="button" style="width: 12rem">Main Menu</a>
+            <a id="menu" class="btn btn-dark fs-4 mt-4" href="./index.html" role="button" style="width: 12rem">Main Menu</a>
+            <a id="rematch" class="btn btn-dark mx-3 fs-4 mt-4 d-none" href="./game.html" role="button" style="width: 12rem">Re-match</a>
           </div>
           
         </div>
 
         <div class="col-3 position-absolute bottom-0 end-0">
           <div class="row justify-content-center">
-            <div class="col-3 my-5 rounded-circle bg-warning" style="width:10rem; height:10rem"></div>
+            <div class="col-3 my-5 rounded-circle bg-warning border border-dark" style="width:10rem; height:10rem"></div>
           </div>
           <div class="row justify-content-center">
             <div class="col"></div>
             <div class="col my-2">
-              <img id="player2" class="mx-auto" src="./images/selected.png" alt="scrappy" style="width:10rem; height:10rem">
+              <img id="player2" class="mx-auto border border-dark" src="./images/selected.png" alt="scrappy" style="width:10rem; height:10rem">
             </div>
             <div class="col"></div>
             <h1 class="text-center text-warning">Player 2</h1>

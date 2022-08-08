@@ -27,17 +27,6 @@ let playerRef;
     console.log(user);
     if(user) {
       playerId = user.uid;
-      playerRef = ref(database, `players/${playerId}/setting`);
-      get(playerRef).then((snapshot) => {
-          if (snapshot.exists()) {
-            document.getElementById('mode').href = `${snapshot.val()}.css`;
-          } else {
-            console.log("No data available");
-          }
-      }).catch((error) => {
-        console.error(error);
-      });
-
       playerRef = ref(database, `players/${playerId}/player2/difficulty`);
     } else {
       console.log('user signed out');

@@ -20,29 +20,27 @@ const auth = getAuth(app);
 
 let playerId;
 let playerRef;
+let mode;
 
 (function () {
 
   onAuthStateChanged(auth, (user) => {
     if(user) {
-      playerId = user.uid;
-
-      playerRef = ref(database, `players/${playerId}/setting`);
-      get(playerRef).then((snapshot) => {
-          if (snapshot.exists()) {
-            document.getElementById('mode').href = `${snapshot.val()}.css`;
-          } else {
-            console.log("No data available");
-          }
-      }).catch((error) => {
-        console.error(error);
-      });
-
-      
+      playerId = user.uid;  
       playerRef = ref(database, `players/${playerId}/player1/character`);
       set(playerRef, 'null');
       playerRef = ref(database, `players/${playerId}/player2/character`);
       set(playerRef, 'null');
+
+      playerRef = ref(database, `players/${playerId}/mode`);
+      get(playerRef).then((snapshot) => {
+        if (snapshot.exists()) {
+            mode = snapshot.val();
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
+
     } else {
       console.log('user signed out');
     }
@@ -96,6 +94,16 @@ function highLightCharacter(event) {
         playerRef = ref(database, `players/${playerId}/player1/character`);
         set(playerRef, JSON.stringify(characters[characterID]));
 
+        if(mode === 'players-1') {
+            let num = Math.floor(Math.random() * 10);
+            while(num == characterID) {
+                num = Math.floor(Math.random() * 10);
+            }
+
+            playerRef = ref(database, `players/${playerId}/player2/character`);
+            set(playerRef, JSON.stringify(characters[num]));
+        }
+        
     } else{
         const characterID = event.target.id[event.target.id.length-1];
         if(characterID === p1Id)
@@ -126,6 +134,8 @@ for(let i = 0; i < characterImgs.length; i++) {
 }
 
 selectButton.addEventListener('click', () => {
+    document.getElementById('player').innerHTML = 'Player 2';
+    document.getElementById('player').className = 'text-warning';
     for(let i = 0; i < characterImgs.length; i++) {
         let parameterStr = "displayCharacter(" + i + ", 2)";
         characterImgs[i].setAttribute('onmouseover', parameterStr);
