@@ -1,3 +1,73 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-auth.js";
+import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-database.js";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCUm01C5N8w-gFoVRww9l2xdEMOKPL5du4",
+  authDomain: "collegiate-4.firebaseapp.com",
+  databaseURL: "https://collegiate-4-default-rtdb.firebaseio.com",
+  projectId: "collegiate-4",
+  storageBucket: "collegiate-4.appspot.com",
+  messagingSenderId: "32314001392",
+  appId: "1:32314001392:web:98641330c025deb24f3f35"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const auth = getAuth(app);
+
+let playerId;
+let playerRef;
+
+(function () {
+
+  onAuthStateChanged(auth, (user) => {
+    if(user) {
+      playerId = user.uid;
+
+      playerRef = ref(database, `players/${playerId}/setting`);
+      get(playerRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            document.getElementById('mode').href = `${snapshot.val()}.css`;
+          } else {
+            console.log("No data available");
+          }
+      }).catch((error) => {
+        console.error(error);
+      });
+
+      
+      playerRef = ref(database, `players/${playerId}/player1/character`);
+      set(playerRef, 'null');
+      playerRef = ref(database, `players/${playerId}/player2/character`);
+      set(playerRef, 'null');
+    } else {
+      console.log('user signed out');
+    }
+  })
+
+  signInAnonymously(auth)
+    .then(() => {
+      console.log('signed In');
+    })
+    .catch((error) => { 
+      console.log(error.code, error.message);
+    });
+
+
+    /*if(game.mode === 'create') {
+        selectButton.setAttribute('href', './create.html');
+    }
+
+    if(game.mode === 'join') {
+        selectButton.setAttribute('href', './join.html');
+    }*/
+
+})();
+
+
 const characterImgs = document.getElementsByClassName('col')[0].getElementsByTagName('img');
 const selectedp1 = document.getElementById('selectedp1');
 const selectedp2 = document.getElementById('selectedp2')
@@ -11,23 +81,6 @@ let finish = false;
 let p1Id = -1;
 let p2Id = -2;
 
-function displayCharacter(character, player=1) {
-    if(player === 1) {
-        selectedp1.src = characters[character].imgSrc;
-        selectedBody1.getElementsByTagName('h5')[0].innerHTML = characters[character].name;
-        selectedBody1.getElementsByTagName('p')[0].innerHTML = characters[character].info;
-    }
-        
-    
-    if(player === 2) {
-        selectedp2.src = characters[character].imgSrc;
-        selectedBody2.getElementsByTagName('h5')[0].innerHTML = characters[character].name;
-        selectedBody2.getElementsByTagName('p')[0].innerHTML = characters[character].info;
-    }
-}
-
-function selectCharacter() { sessionStorage.setItem('game', JSON.stringify(game)); }
-
 function highLightCharacter(event) {
     if(!clickedTwice) {
         const characterID = event.target.id[event.target.id.length-1];
@@ -39,8 +92,9 @@ function highLightCharacter(event) {
         selectedp1.src = characters[characterID].imgSrc;
         selectedBody1.getElementsByTagName('h5')[0].innerHTML = characters[characterID].name;
         selectedBody1.getElementsByTagName('p')[0].innerHTML = characters[characterID].info;
-        game.player1.character.imgSrc = characters[characterID].imgSrc;
         p1Id = characterID;
+        playerRef = ref(database, `players/${playerId}/player1/character`);
+        set(playerRef, JSON.stringify(characters[characterID]));
 
     } else{
         const characterID = event.target.id[event.target.id.length-1];
@@ -54,8 +108,8 @@ function highLightCharacter(event) {
         selectedp2.src = characters[characterID].imgSrc;
         selectedBody2.getElementsByTagName('h5')[0].innerHTML = characters[characterID].name;
         selectedBody2.getElementsByTagName('p')[0].innerHTML = characters[characterID].info;
-        game.player2.character.imgSrc = characters[characterID].imgSrc;
-        selectCharacter();
+        playerRef = ref(database, `players/${playerId}/player2/character`);
+        set(playerRef, JSON.stringify(characters[characterID]));
         finish = true;
     }
         
@@ -73,7 +127,7 @@ for(let i = 0; i < characterImgs.length; i++) {
 
 selectButton.addEventListener('click', () => {
     for(let i = 0; i < characterImgs.length; i++) {
-        parameterStr = "displayCharacter(" + i + ", 2)";
+        let parameterStr = "displayCharacter(" + i + ", 2)";
         characterImgs[i].setAttribute('onmouseover', parameterStr);
         clickedTwice = true;
     }
@@ -146,17 +200,6 @@ const characters = [
     },
 ]
 
-const game = JSON.parse(sessionStorage.getItem('game'));
-game.player1.character = JSON.parse(JSON.stringify(characters[0]));
-game.player2.character = JSON.parse(JSON.stringify(characters[1]));
-
-if(game.mode === 'create') {
-    selectButton.setAttribute('href', './create.html');
-}
-
-if(game.mode === 'join') {
-    selectButton.setAttribute('href', './join.html');
-}
 
 
 

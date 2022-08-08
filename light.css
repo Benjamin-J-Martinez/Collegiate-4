@@ -1,0 +1,21 @@
+body {
+    background: url(./images/light-mode.jpg) no-repeat center center fixed;
+    background-size: 100% 100%;
+}
+
+#table {
+    background: url(./images/light-board.jpg) no-repeat center center fixed;
+    background-size: 52% 80%;
+}
+
+p {
+    color: black !important;
+}
+
+h1 {
+    color: black !important;
+}
+
+h5 {
+    color: black !important;
+}

@@ -7,3 +7,11 @@ body {
     background: url(./images/light-board.jpg) no-repeat center center fixed;
     background-size: 52% 80%;
 }
+
+h1 {
+    color: white !important;
+}
+
+h5 {
+    color: white !important;
+}
