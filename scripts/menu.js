@@ -7,7 +7,6 @@ import {Board} from './board.js';
 const b = new Board();
 
 let dark = true;
-let s;
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -39,7 +38,7 @@ let playerRef;
       set(playerRef, {
         id: playerId,
         mode: 'null',
-        setting: s,
+        setting: 'dark',
         player1: {
             id: '1',
             character: 'null',

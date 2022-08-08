@@ -36,6 +36,12 @@ let mode;
       get(playerRef).then((snapshot) => {
         if (snapshot.exists()) {
             mode = snapshot.val();
+            if(mode === 'create') {
+                selectButton.setAttribute('href', './online-game.html');
+            }
+            if(mode === 'join') {
+                selectButton.setAttribute('href', './join.html');
+            } 
         }
       }).catch((error) => {
         console.error(error);
@@ -54,18 +60,18 @@ let mode;
       console.log(error.code, error.message);
     });
 
-
-    /*if(game.mode === 'create') {
-        selectButton.setAttribute('href', './create.html');
+    console.log(mode);
+    if(mode === 'create') {
+        selectButton.setAttribute('href', './online-game.html');
     }
 
-    if(game.mode === 'join') {
+    if(mode === 'join') {
         selectButton.setAttribute('href', './join.html');
-    }*/
+    }
 
 })();
 
-
+console.log(mode);
 const characterImgs = document.getElementsByClassName('col')[0].getElementsByTagName('img');
 const selectedp1 = document.getElementById('selectedp1');
 const selectedp2 = document.getElementById('selectedp2')
