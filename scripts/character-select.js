@@ -40,7 +40,7 @@ let mode;
                 selectButton.setAttribute('href', './online-game.html');
             }
             if(mode === 'join') {
-                selectButton.setAttribute('href', './join.html');
+                selectButton.setAttribute('href', './online-game.html');
             } 
         }
       }).catch((error) => {
