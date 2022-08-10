@@ -22,7 +22,7 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const auth = getAuth(app);
 console.log(location.href);
-if(location.href === 'http://127.0.0.1:8080/online.html') {
+if(location.href === 'https://benjamin-j-martinez.github.io/Collegiate-4/online.html') {
   document.getElementById('create').addEventListener('click', () => {
     let playerId;
     let playerRef;
@@ -104,7 +104,7 @@ if(location.href === 'http://127.0.0.1:8080/online.html') {
 }
 
 
-if(location.href === 'http://127.0.0.1:8080/online-game.html') {
+if(location.href === 'https://benjamin-j-martinez.github.io/Collegiate-4/online-game.html') {
   let playerId;
   let playerRef;
   onAuthStateChanged(auth, (user) => {
@@ -140,7 +140,7 @@ if(location.href === 'http://127.0.0.1:8080/online-game.html') {
             playerRef = ref(database, `players/${rId}/player2/character`);
             onValue(playerRef, (snapshot) => {
               document.getElementById('player2').src = JSON.parse(snapshot.val()).imgSrc;
-              document.getElementById('winner').innerHTML = 'Player 1 turn'
+              document.getElementById('winner').className = 'd-none';
             }, {onlyOnce: true});
 
             document.getElementById('room').innerHTML = rId;
@@ -154,7 +154,6 @@ if(location.href === 'http://127.0.0.1:8080/online-game.html') {
             playerRef = ref(database, `players/${rId}/player1/turn`);
             onValue(playerRef, (snapshot) => {
               if(!snapshot.val()) {
-                console.log('are we here')
                 game2(rId);
               }
           });
@@ -170,7 +169,7 @@ if(location.href === 'http://127.0.0.1:8080/online-game.html') {
           onValue(playerRef, (snapshot) => {
             if(snapshot.val() !== 'null') {
               document.getElementById('player2').src = JSON.parse(snapshot.val()).imgSrc;
-              document.getElementById('winner').innerHTML = 'Player 1 turn'
+              document.getElementById('winner').className = 'd-none';
             }
           });
 
@@ -184,7 +183,6 @@ if(location.href === 'http://127.0.0.1:8080/online-game.html') {
           playerRef = ref(database, `players/${playerId}/player1/turn`);
           onValue(playerRef, (snapshot) => {
             if(snapshot.val() === true) {
-              console.log('are we here')
               game(playerId);
             }
           });
@@ -203,7 +201,40 @@ const table = document.getElementById('table');
 const cols = table.getElementsByTagName('td');
 
 function game(playerID) {
-  let p1Turn = true;
+  if(board.getStatus() === 1) {
+    const menuButton = document.getElementById('menu');
+    const rematchButton = document.getElementById('rematch');
+    rematchButton.className = 'btn btn-dark fs-4 mx-5 mt-4';
+    document.getElementById('winner').innerHTML = 'Player 1 Wins!!!';
+    document.getElementById('winner').className = 'text-center text-danger';
+    rematchButton.addEventListener('click', () => {
+      let playerRef = ref(database, `players/${playerID}/player1/turn`);
+      set(playerRef, true);
+      playerRef = ref(database, `players/${playerID}/board`);
+      const newBoard = new Board();
+      set(playerRef, newBoard.board);
+    });
+    menuButton.className = 'btn btn-dark fs-4 mt-4';
+    removeListeners();
+    return;
+  }
+  else if(board.getStatus() === 2) {
+    const menuButton = document.getElementById('menu');
+    menuButton.className = 'btn btn-dark fs-4 mt-4';
+    const rematchButton = document.getElementById('rematch');
+    rematchButton.className = 'btn btn-dark fs-4 mx-5 mt-4';
+    rematchButton.addEventListener('click', () => {
+      let playerRef = ref(database, `players/${playerID}/player1/turn`);
+      set(playerRef, true);
+      playerRef = ref(database, `players/${playerID}/board`);
+      const newBoard = new Board();
+      set(playerRef, newBoard.board);
+    });
+    document.getElementById('winner').innerHTML = 'Player 2 Wins!!!';
+    document.getElementById('winner').className = 'text-center text-warning';
+    removeListeners();
+    return;
+  }
 
   for(let i = 0; i < cols.length; i++) {
     cols[i].addEventListener('mouseover', (event) => {
@@ -232,11 +263,17 @@ function game(playerID) {
       playerRef = ref(database, `players/${playerID}/player1/turn`);
       set(playerRef, false);
       removeListeners();
-      p1Turn = !p1Turn;
 
       if(board.getStatus() === 1) {
         const menuButton = document.getElementById('menu');
         const rematchButton = document.getElementById('rematch');
+        rematchButton.addEventListener('click', () => {
+          let playerRef = ref(database, `players/${playerID}/player1/turn`);
+          set(playerRef, true);
+          playerRef = ref(database, `players/${playerID}/board`);
+          const newBoard = new Board();
+          set(playerRef, newBoard.board);
+        });
         rematchButton.className = 'btn btn-dark fs-4 mx-5 mt-4';
         document.getElementById('winner').innerHTML = 'Player 1 Wins!!!';
         document.getElementById('winner').className = 'text-center text-danger';
@@ -248,6 +285,13 @@ function game(playerID) {
         menuButton.className = 'btn btn-dark fs-4 mt-4';
         const rematchButton = document.getElementById('rematch');
         rematchButton.className = 'btn btn-dark fs-4 mx-5 mt-4';
+        rematchButton.addEventListener('click', () => {
+          let playerRef = ref(database, `players/${playerID}/player1/turn`);
+          set(playerRef, true);
+          playerRef = ref(database, `players/${playerID}/board`);
+          const newBoard = new Board();
+          set(playerRef, newBoard.board);
+        });
         document.getElementById('winner').innerHTML = 'Player 2 Wins!!!';
         document.getElementById('winner').className = 'text-center text-warning';
         removeListeners();
@@ -259,7 +303,40 @@ function game(playerID) {
 }
 
 function game2(playerID) {
-  let p1Turn = true;
+  if(board.getStatus() === 1) {
+    const menuButton = document.getElementById('menu');
+    const rematchButton = document.getElementById('rematch');
+    rematchButton.className = 'btn btn-dark fs-4 mx-5 mt-4';
+    rematchButton.addEventListener('click', () => {
+      let playerRef = ref(database, `players/${playerID}/player1/turn`);
+      set(playerRef, true);
+      playerRef = ref(database, `players/${playerID}/board`);
+      const newBoard = new Board();
+      set(playerRef, newBoard.board);
+    });
+    document.getElementById('winner').innerHTML = 'Player 1 Wins!!!';
+    document.getElementById('winner').className = 'text-center text-danger';
+    menuButton.className = 'btn btn-dark fs-4 mt-4';
+    removeListeners();
+    return;
+  }
+  else if(board.getStatus() === 2) {
+    const menuButton = document.getElementById('menu');
+    menuButton.className = 'btn btn-dark fs-4 mt-4';
+    const rematchButton = document.getElementById('rematch');
+    rematchButton.className = 'btn btn-dark fs-4 mx-5 mt-4';
+    rematchButton.addEventListener('click', () => {
+      let playerRef = ref(database, `players/${playerID}/player1/turn`);
+      set(playerRef, true);
+      playerRef = ref(database, `players/${playerID}/board`);
+      const newBoard = new Board();
+      set(playerRef, newBoard.board);
+    });
+    document.getElementById('winner').innerHTML = 'Player 2 Wins!!!';
+    document.getElementById('winner').className = 'text-center text-warning';
+    removeListeners();
+    return;
+  }
 
   for(let i = 0; i < cols.length; i++) {
     cols[i].addEventListener('mouseover', (event) => {
@@ -294,6 +371,13 @@ function game2(playerID) {
         const menuButton = document.getElementById('menu');
         const rematchButton = document.getElementById('rematch');
         rematchButton.className = 'btn btn-dark fs-4 mx-5 mt-4';
+        rematchButton.addEventListener('click', () => {
+          let playerRef = ref(database, `players/${playerID}/player1/turn`);
+          set(playerRef, true);
+          playerRef = ref(database, `players/${playerID}/board`);
+          const newBoard = new Board();
+          set(playerRef, newBoard.board);
+        });
         document.getElementById('winner').innerHTML = 'Player 1 Wins!!!';
         document.getElementById('winner').className = 'text-center text-danger';
         menuButton.className = 'btn btn-dark fs-4 mt-4';
@@ -304,6 +388,13 @@ function game2(playerID) {
         menuButton.className = 'btn btn-dark fs-4 mt-4';
         const rematchButton = document.getElementById('rematch');
         rematchButton.className = 'btn btn-dark fs-4 mx-5 mt-4';
+        rematchButton.addEventListener('click', () => {
+          let playerRef = ref(database, `players/${playerID}/player1/turn`);
+          set(playerRef, true);
+          playerRef = ref(database, `players/${playerID}/board`);
+          const newBoard = new Board();
+          set(playerRef, newBoard.board);
+        });
         document.getElementById('winner').innerHTML = 'Player 2 Wins!!!';
         document.getElementById('winner').className = 'text-center text-warning';
         removeListeners();
