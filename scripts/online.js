@@ -4,16 +4,7 @@ import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gsta
 import { getDatabase, ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-database.js";
 import {Board} from './board.js';
 
-const board = new Board();
-let mode = 'hi';
-const player1 = {
-  character: null,
-  turn: true
-};
-const player2 = {
-  character: null,
-  turn: false
-};
+let board = new Board();
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -134,11 +125,39 @@ if(location.href === 'http://127.0.0.1:8080/online-game.html') {
           playerRef = ref(database, `players/${playerId}/roomID`);
           onValue(playerRef, (snapshot) => {
             const rId = snapshot.val();
+
             playerRef = ref(database, `players/${playerId}/player1/character`);
             onValue(playerRef, (snapshot) => {
               playerRef = ref(database, `players/${rId}/player2/character`);
-              set(playerRef, snapshot.val());
-            })
+              set(playerRef, snapshot.val())
+            });
+
+            playerRef = ref(database, `players/${rId}/player1/character`);
+            onValue(playerRef, (snapshot) => {
+              document.getElementById('player1').src = JSON.parse(snapshot.val()).imgSrc;
+            }, {onlyOnce: true});
+
+            playerRef = ref(database, `players/${rId}/player2/character`);
+            onValue(playerRef, (snapshot) => {
+              document.getElementById('player2').src = JSON.parse(snapshot.val()).imgSrc;
+              document.getElementById('winner').innerHTML = 'Player 1 turn'
+            }, {onlyOnce: true});
+
+            document.getElementById('room').innerHTML = rId;
+
+            playerRef = ref(database, `players/${rId}/board`);
+            onValue(playerRef, (snapshot) => {
+              board = new Board(JSON.parse(snapshot.val()));
+              renderGame(board);
+            });
+
+            playerRef = ref(database, `players/${rId}/player1/turn`);
+            onValue(playerRef, (snapshot) => {
+              if(!snapshot.val()) {
+                console.log('are we here')
+                game2(rId);
+              }
+          });
           });
 
         } else if(snapshot.val() === 'create') {
@@ -149,21 +168,26 @@ if(location.href === 'http://127.0.0.1:8080/online-game.html') {
 
           playerRef = ref(database, `players/${playerId}/player2/character`);
           onValue(playerRef, (snapshot) => {
-          document.getElementById('player2').src = JSON.parse(snapshot.val()).imgSrc;
-          document.getElementById('winner').innerHTML = 'Player 1 turn'
+            if(snapshot.val() !== 'null') {
+              document.getElementById('player2').src = JSON.parse(snapshot.val()).imgSrc;
+              document.getElementById('winner').innerHTML = 'Player 1 turn'
+            }
           });
 
           playerRef = ref(database, `players/${playerId}/board`);
           onValue(playerRef, (snapshot) => {
-            console.log(snapshot.val());
+            board = new Board(JSON.parse(snapshot.val()));
+            renderGame(board);
           });
           document.getElementById('room').innerHTML = playerId;
-          game(playerId);
 
-
-
-
-
+          playerRef = ref(database, `players/${playerId}/player1/turn`);
+          onValue(playerRef, (snapshot) => {
+            if(snapshot.val() === true) {
+              console.log('are we here')
+              game(playerId);
+            }
+          });
 
         }
       }, {onlyOnce: true});
@@ -175,11 +199,10 @@ if(location.href === 'http://127.0.0.1:8080/online-game.html') {
     });
 }
 
+const table = document.getElementById('table');
+const cols = table.getElementsByTagName('td');
+
 function game(playerID) {
-
-  const table = document.getElementById('table');
-  const cols = table.getElementsByTagName('td');
-
   let p1Turn = true;
 
   for(let i = 0; i < cols.length; i++) {
@@ -191,10 +214,7 @@ function game(playerID) {
       const id = 'h' + col[1];
       const tileDiv = document.getElementById(id).getElementsByTagName('div')[0];
 
-      if(p1Turn)
-        tileDiv.className = 'rounded-circle bg-danger mx-auto';
-      else 
-        tileDiv.className = 'rounded-circle bg-warning mx-auto';
+      tileDiv.className = 'rounded-circle bg-danger mx-auto';
     });
 
     cols[i].addEventListener('mouseout', (event) => {
@@ -206,17 +226,69 @@ function game(playerID) {
 
     cols[i].addEventListener('click', (event) => {
       const col = event.target.id[1];
-      let playerRef = ref(database, `players/${playerID}/player1/turn`);
-      onValue(playerRef, (snapshot) => {
-        if(snapshot.val()) {
-          board.placeTile(col, 1);
-          set(playerRef, false);
-          playerRef = ref(database, `players/${playerID}/board`);
-          set(playerRef, JSON.stringify(board.board));
-          renderGame(board);
-          p1Turn = !p1Turn;
-        }
-      });
+      board.placeTile(col, 1);
+      let playerRef = ref(database, `players/${playerID}/board`);
+      set(playerRef, JSON.stringify(board.board));
+      playerRef = ref(database, `players/${playerID}/player1/turn`);
+      set(playerRef, false);
+      removeListeners();
+      p1Turn = !p1Turn;
+
+      if(board.getStatus() === 1) {
+        const menuButton = document.getElementById('menu');
+        const rematchButton = document.getElementById('rematch');
+        rematchButton.className = 'btn btn-dark fs-4 mx-5 mt-4';
+        document.getElementById('winner').innerHTML = 'Player 1 Wins!!!';
+        document.getElementById('winner').className = 'text-center text-danger';
+        menuButton.className = 'btn btn-dark fs-4 mt-4';
+        removeListeners();
+      }
+      else if(board.getStatus() === 2) {
+        const menuButton = document.getElementById('menu');
+        menuButton.className = 'btn btn-dark fs-4 mt-4';
+        const rematchButton = document.getElementById('rematch');
+        rematchButton.className = 'btn btn-dark fs-4 mx-5 mt-4';
+        document.getElementById('winner').innerHTML = 'Player 2 Wins!!!';
+        document.getElementById('winner').className = 'text-center text-warning';
+        removeListeners();
+      }
+          
+    });
+  }
+
+}
+
+function game2(playerID) {
+  let p1Turn = true;
+
+  for(let i = 0; i < cols.length; i++) {
+    cols[i].addEventListener('mouseover', (event) => {
+      if(board.getStatus())
+        return;
+
+      const col = event.target.id;
+      const id = 'h' + col[1];
+      const tileDiv = document.getElementById(id).getElementsByTagName('div')[0];
+     
+      tileDiv.className = 'rounded-circle bg-warning mx-auto';
+
+    });
+
+    cols[i].addEventListener('mouseout', (event) => {
+      const col = event.target.id;
+      const id = 'h' + col[1];
+      const tileDiv = document.getElementById(id).getElementsByTagName('div')[0];
+      tileDiv.className = 'rounded-circle bg-warning mx-auto invisible';
+    });
+
+    cols[i].addEventListener('click', (event) => {
+      const col = event.target.id[1];
+      board.placeTile(col, 2);
+      let playerRef = ref(database, `players/${playerID}/board`);
+      set(playerRef, JSON.stringify(board.board));
+      playerRef = ref(database, `players/${playerID}/player1/turn`);
+      set(playerRef, true);
+      removeListeners();
 
       if(board.getStatus() === 1) {
         const menuButton = document.getElementById('menu');

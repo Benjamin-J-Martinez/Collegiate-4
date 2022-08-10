@@ -37,18 +37,18 @@ let playerRef;
 
       set(playerRef, {
         id: playerId,
-        mode: 'null',
+        mode: null,
         setting: 'dark',
         player1: {
             id: '1',
-            character: 'null',
+            character: null,
             turn: true
         },
         player2: {
             id: '2',
-            character: 'null',
+            character: null,
             turn: false,
-            difficulty: 'null'
+            difficulty: null
         },
         board: JSON.stringify(b.board)
       });
